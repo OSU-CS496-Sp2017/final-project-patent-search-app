@@ -2,6 +2,8 @@ package com.example.bryan.patentsearch;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +21,8 @@ import com.example.bryan.patentsearch.utils.PatentsViewUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity
+        implements PatentsViewAdapter.OnSearchResultClickListener, LoaderManager.LoaderCallbacks<String> {
 
     private EditText mEditText;
     private Button mSearchButton;
@@ -81,6 +84,21 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(this, PatentsViewItemDetailActivity.class);
         intent.putExtra(PatentsViewUtils.SearchResult.EXTRA_SEARCH_RESULT, searchResult);
         startActivity(intent);
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+
     }
 
     public class PatentSearchTask extends AsyncTask<String, Void, String> {
