@@ -1,7 +1,9 @@
 package com.example.bryan.patentsearch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -61,18 +63,22 @@ public class MainActivity extends AppCompatActivity
 
     private void doPatentSearch(String searchString){
         String searchUrl = "";
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String date = sharedPreferences.getString(getString(R.string.pref_date_sort_key), getString(R.string.pref_sort_default));
+        String patent = sharedPreferences.getString(getString(R.string.pref_patent_sort_key), getString(R.string.pref_sort_default));
+        String resultNumber = sharedPreferences.getString(getString(R.string.pref_result_sort_key), getString(R.string.pref_result_default));
         // We need to check if the user is searching for a patent number or a title
         int searchNumber;
+        //no reason to sort if the user enters a specific patent number
         try{
             searchNumber = Integer.parseInt(searchString);
             searchUrl = "http://www.patentsview.org/api/patents/query?q={%22patent_number%22:%22" +
                     searchString +
                     "%22}";
         } catch (NumberFormatException e) {
-            searchUrl = "http://www.patentsview.org/api/patents/query?q={%22patent_title%22:%22" +
+            searchUrl = "http://www.patentsview.org/api/patents/query?q={%22_text_any%22:{%22patent_title%22:%22" +
                     searchString +
-                    "%22}";
+                    "%22}}&o={%22per_page%22:" + resultNumber + "}&s=[{%22patent_date%22:%22" + date + "%22},{%22patent_number%22:{%22" + patent + "%22}]";
         }
 
         Log.d("MainActivity", "got search url: " + searchUrl);

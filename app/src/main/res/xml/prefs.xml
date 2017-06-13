@@ -10,15 +10,6 @@
         android:defaultValue="@string/pref_sort_default"
         />
     <ListPreference
-        android:key="@string/pref_claim_sort_key"
-        android:title="@string/pref_claim_sort_title"
-        android:dialogTitle="@string/pref_claim_sort_title"
-        android:summary="%s"
-        android:entries="@array/pref_num_claims_entry"
-        android:entryValues="@array/pref_sort_values"
-        android:defaultValue="@string/pref_sort_default"
-        />
-    <ListPreference
         android:key="@string/pref_patent_sort_key"
         android:title="@string/pref_patent_sort_title"
         android:dialogTitle="@string/pref_patent_sort_title"

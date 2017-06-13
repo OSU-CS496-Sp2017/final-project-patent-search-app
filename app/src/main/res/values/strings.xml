@@ -8,12 +8,10 @@
     <string name="loading_error_message">Woops.  We couldn\'t complete your search.  Check your internet connection and try again.</string>
     
     <string name="pref_date_sort_key">pref_date_sort</string>
-    <string name="pref_claim_sort_key">pref_claim_sort</string>
     <string name="pref_patent_sort_key">pref_patent_sort</string>
     <string name="pref_date_sort_title">Sort Date In</string>
     <string name="pref_result_sort_key">pref_result_sort</string>
     <string name="pref_result_sort_title">Number of Results</string>
-    <string name="pref_claim_sort_title">Sort Claim Numbers In</string>
     <string name="pref_patent_sort_title">Sort Patent Numbers In</string>
     <string name="pref_sort_default">desc</string>
     <string name="pref_result_default">25</string>
