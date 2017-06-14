@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.bryan.patentsearch.utils.NetworkUtils;
@@ -27,11 +29,17 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements PatentsViewAdapter.OnSearchResultClickListener, LoaderManager.LoaderCallbacks<String> {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String SEARCH_URL_KEY = "patentsViewSearchURL";
+    private static final int PATENTS_VIEW_SEARCH_LOADER_ID = 0;
+
     private EditText mEditText;
     private Button mSearchButton;
     private TextView mLoadingErrorMessageTV;
     private RecyclerView mSearchResultsRV;
     private PatentsViewAdapter mPatentsViewAdapter;
+    private ProgressBar mLoadingIndicatorPB;
+
 
     private String mSearchString;
 
@@ -44,6 +52,8 @@ public class MainActivity extends AppCompatActivity
         mEditText = (EditText) findViewById(R.id.et_search_box);
         mSearchButton = (Button) findViewById(R.id.btn_search);
         mSearchResultsRV = (RecyclerView)findViewById(R.id.rv_search_results);
+        mLoadingIndicatorPB = (ProgressBar)findViewById(R.id.pb_loading_indicator);
+        mLoadingErrorMessageTV = (TextView)findViewById(R.id.tv_loading_error_message);
 
         mSearchResultsRV.setLayoutManager(new LinearLayoutManager(this));
         mSearchResultsRV.setHasFixedSize(true);
@@ -62,27 +72,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void doPatentSearch(String searchString){
-        String searchUrl = "";
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String date = sharedPreferences.getString(getString(R.string.pref_date_sort_key), getString(R.string.pref_sort_default));
-        String patent = sharedPreferences.getString(getString(R.string.pref_patent_sort_key), getString(R.string.pref_sort_default));
+        //String number = sharedPreferences.getString(getString(R.string.pref_patent_sort_key), getString(R.string.pref_sort_default));
         String resultNumber = sharedPreferences.getString(getString(R.string.pref_result_sort_key), getString(R.string.pref_result_default));
-        // We need to check if the user is searching for a patent number or a title
-        int searchNumber;
-        //no reason to sort if the user enters a specific patent number
-        try{
-            searchNumber = Integer.parseInt(searchString);
-            searchUrl = "http://www.patentsview.org/api/patents/query?q={%22patent_number%22:%22" +
-                    searchString +
-                    "%22}";
-        } catch (NumberFormatException e) {
-            searchUrl = "http://www.patentsview.org/api/patents/query?q={%22_text_any%22:{%22patent_title%22:%22" +
-                    searchString +
-                    "%22}}&o={%22per_page%22:" + resultNumber + "}&s=[{%22patent_date%22:%22" + date + "%22},{%22patent_number%22:{%22" + patent + "%22}]";
-        }
 
-        Log.d("MainActivity", "got search url: " + searchUrl);
-        new PatentSearchTask().execute(searchUrl);
+        String url = PatentsViewUtils.buildPatentsViewURL(mEditText.getText().toString(), date, resultNumber);
+
+        Log.d("MainActivity", "got search url: " + url);
+        Bundle argsBundle = new Bundle();
+        argsBundle.putString(SEARCH_URL_KEY, url);
+        getSupportLoaderManager().restartLoader(PATENTS_VIEW_SEARCH_LOADER_ID, argsBundle, this);
 
     }
 
@@ -106,13 +106,62 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return null;
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<String>(this) {
+
+            String mSearchResultsJSON;
+
+            @Override
+            protected void onStartLoading() {
+                if (args != null) {
+                    if (mSearchResultsJSON != null) {
+                        Log.d(TAG, "AsyncTaskLoader delivering cached results");
+                        deliverResult(mSearchResultsJSON);
+                    } else {
+                        mLoadingIndicatorPB.setVisibility(View.VISIBLE);
+                        forceLoad();
+                    }
+                }
+            }
+
+            @Override
+            public String loadInBackground() {
+                if (args != null) {
+                    String patentsViewSearchUrl = args.getString(SEARCH_URL_KEY);
+                    Log.d(TAG, "AsyncTaskLoader making network call: " + patentsViewSearchUrl);
+                    String searchResults = null;
+                    try {
+                        searchResults = NetworkUtils.doHTTPGet(patentsViewSearchUrl);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return searchResults;
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public void deliverResult(String data) {
+                mSearchResultsJSON = data;
+                super.deliverResult(data);
+            }
+        };
     }
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-
+        Log.d(TAG, "AsyncTaskLoader's onLoadFinished called");
+        mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
+        if (data != null) {
+            mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
+            mSearchResultsRV.setVisibility(View.VISIBLE);
+            ArrayList<PatentsViewUtils.SearchResult> searchResultsList = PatentsViewUtils.parsePatentsSearchResultsJSON(data);
+            mPatentsViewAdapter.updateSearchResults(searchResultsList);
+        } else {
+            mSearchResultsRV.setVisibility(View.INVISIBLE);
+            mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -120,6 +169,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /*
     public class PatentSearchTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -151,6 +201,17 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+
+    }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
