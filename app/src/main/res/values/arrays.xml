@@ -11,11 +11,6 @@
         <item>desc</item>
     </string-array>
 
-    <string-array name="pref_patent_entry">
-        <item>Ascending</item>
-        <item>Descending</item>
-    </string-array>
-
     <string-array name="pref_result_num_entry">
         <item>25</item>
         <item>50</item>

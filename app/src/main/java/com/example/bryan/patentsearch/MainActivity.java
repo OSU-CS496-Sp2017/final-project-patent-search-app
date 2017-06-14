@@ -2,7 +2,6 @@ package com.example.bryan.patentsearch;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -41,9 +40,6 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadingIndicatorPB;
 
 
-    private String mSearchString;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +57,12 @@ public class MainActivity extends AppCompatActivity
         mPatentsViewAdapter = new PatentsViewAdapter(this);
         mSearchResultsRV.setAdapter(mPatentsViewAdapter);
 
+        getSupportLoaderManager().initLoader(PATENTS_VIEW_SEARCH_LOADER_ID, null, this);
 
         mSearchButton.setOnClickListener(new View.OnClickListener() {
-            String userText = mEditText.getText().toString();
             @Override
             public void onClick(View v) {
+                String userText = mEditText.getText().toString();
                 doPatentSearch(userText);
             }
         });
@@ -77,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         //String number = sharedPreferences.getString(getString(R.string.pref_patent_sort_key), getString(R.string.pref_sort_default));
         String resultNumber = sharedPreferences.getString(getString(R.string.pref_result_sort_key), getString(R.string.pref_result_default));
 
-        String url = PatentsViewUtils.buildPatentsViewURL(mEditText.getText().toString(), date, resultNumber);
+        String url = PatentsViewUtils.buildPatentsViewURL(searchString, date, resultNumber);
 
         Log.d("MainActivity", "got search url: " + url);
         Bundle argsBundle = new Bundle();
@@ -168,50 +165,6 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<String> loader) {
 
     }
-
-    /*
-    public class PatentSearchTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String patentSearchUrl = params[0];
-            String searchResults = null;
-            try {
-                searchResults = NetworkUtils.doHTTPGet(patentSearchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return searchResults;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (s != null) {
-                //mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
-                //mSearchResultsRV.setVisibility(View.VISIBLE);
-                ArrayList<PatentsViewUtils.SearchResult> searchResultsList = PatentsViewUtils.parsePatentsSearchResultsJSON(s);
-                //mGitHubSearchAdapter.updateSearchResults(searchResultsList);
-            } else {
-                //mSearchResultsRV.setVisibility(View.INVISIBLE);
-                //mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
-
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
