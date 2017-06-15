@@ -39,6 +39,7 @@ public class FavoritesDatabase {
         values.put(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ID, searchResult.patentId);
         values.put(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_TITLE, searchResult.patentTitle);
         values.put(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ABSTRACT, searchResult.patentAbstract);
+        values.put(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_DATE, searchResult.patentDate);
 
         mFavoritesDatabaseHelper.getWritableDatabase().insert(
                 FavoritesDatabaseContract.FavoritePatents.TABLE_NAME, null, values);
@@ -68,6 +69,7 @@ public class FavoritesDatabase {
             res.patentId = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ID));
             res.patentTitle = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_TITLE));
             res.patentAbstract = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ABSTRACT));
+            res.patentDate = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_DATE));
 
             allFavorites.add(res);
         }

@@ -14,11 +14,9 @@ import java.util.ArrayList;
 public class PatentsViewUtils {
 
     private final static String PATENT_SEARCH_BASE_URL = "http://www.patentsview.org/api/patents/query";
-    private final static String PATENT_SEARCH_QUERY_PARAM = "q";
     private final static String PATENT_QUERY_OPTION_PARAM = "o";
     private final static String PATENT_QUERY_SORT_PARAM = "s";
     private final static String PATENT_TITLE_PARAM = "patent_title";
-    private final static String PATENT_NUMBER_PARAM = "patent_number";
     private final static String PATENT_DATE_PARAM = "patent_date";
     private final static String PATENT_PER_PAGE_PARAM = "per_page";
 
@@ -27,6 +25,7 @@ public class PatentsViewUtils {
         public String patentId;
         public String patentTitle;
         public String patentAbstract;
+        public String patentDate;
     }
 
     public static String buildPatentsViewURL(String patentTitle, String date, String perPage) {
@@ -34,7 +33,7 @@ public class PatentsViewUtils {
         String query = "";
         String options = "";
         String sort = "";
-        final String fields = "&f=[\"patent_id\", \"patent_title\", \"patent_abstract\"]";
+        final String fields = "&f=[\"patent_id\", \"patent_title\", \"patent_abstract\", \"patent_date\"]";
 
         if (!patentTitle.equals("")) {
             query = "?q={\"_and\":[{\"_text_any\":{\"" + PATENT_TITLE_PARAM + "\":\"" + patentTitle.replaceAll(" ", "%20") + "\"}}]}";
@@ -63,10 +62,12 @@ public class PatentsViewUtils {
                 searchResult.patentId = searchResultItem.getString("patent_id");
                 searchResult.patentTitle = searchResultItem.getString("patent_title");
                 searchResult.patentAbstract = searchResultItem.getString("patent_abstract");
+                searchResult.patentDate = searchResultItem.getString("patent_date");
 
                 if(searchResult.patentId != null && !searchResult.patentId.equals("null")
                         && searchResult.patentTitle != null && !searchResult.patentTitle.equals("null")
-                        && searchResult.patentAbstract != null && !searchResult.patentAbstract.equals("null")) {
+                        && searchResult.patentAbstract != null && !searchResult.patentAbstract.equals("null")
+                        && searchResult.patentDate != null && !searchResult.patentDate.equals("null")) {
                     searchResultList.add(searchResult);
                 }
             }

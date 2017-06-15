@@ -24,6 +24,7 @@ public class PatentsViewItemDetailActivity extends AppCompatActivity {
     private TextView mSearchResultNumber;
     private TextView mSearchResultTitle;
     private TextView mSearchResultAbstract;
+    private TextView mSearchResultDate;
     private FavoritesDatabase mFavoritesDatabase;
 
     @Override
@@ -34,6 +35,7 @@ public class PatentsViewItemDetailActivity extends AppCompatActivity {
         mSearchResultNumber = (TextView)findViewById(R.id.tv_search_result_number);
         mSearchResultTitle =(TextView)findViewById(R.id.tv_search_result_title);
         mSearchResultAbstract = (TextView) findViewById(R.id.tv_search_result_abstract);
+        mSearchResultDate = (TextView) findViewById(R.id.tv_search_result_date);
 
         Intent intent = getIntent();
         mSearchResult = (PatentsViewUtils.SearchResult)
@@ -41,6 +43,7 @@ public class PatentsViewItemDetailActivity extends AppCompatActivity {
         mSearchResultNumber.setText(mSearchResult.patentId);
         mSearchResultTitle.setText(mSearchResult.patentTitle);
         mSearchResultAbstract.setText(mSearchResult.patentAbstract);
+        mSearchResultDate.setText(mSearchResult.patentDate);
 
         mFavoritesDatabase = new FavoritesDatabase(this);
     }

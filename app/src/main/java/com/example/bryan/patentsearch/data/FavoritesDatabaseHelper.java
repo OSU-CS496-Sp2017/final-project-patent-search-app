@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "favorites.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     protected FavoritesDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,7 +23,8 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + FavoritesDatabaseContract.FavoritePatents.TABLE_NAME + " (" +
                         FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ID + " TEXT PRIMARY KEY, " +
                         FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_TITLE + " TEXT NOT NULL, " +
-                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ABSTRACT + " TEXT NOT NULL" +
+                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ABSTRACT + " TEXT NOT NULL, " +
+                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_DATE + " TEXT NOT NULL" +
                         ");";
         db.execSQL(SQL_CREATE_FAVORITE_REPOS_TABLE);
     }

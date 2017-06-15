@@ -15,6 +15,7 @@ public class FavoritesDatabaseContract {
         public static final String COLUMN_PATENT_ID = "patentId";
         public static final String COLUMN_PATENT_TITLE = "title";
         public static final String COLUMN_PATENT_ABSTRACT = "abstract";
+        public static final String COLUMN_PATENT_DATE = "date";
     }
 
 }
