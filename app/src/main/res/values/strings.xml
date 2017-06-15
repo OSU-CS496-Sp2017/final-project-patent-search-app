@@ -9,10 +9,9 @@
     
     <string name="pref_date_sort_key">pref_date_sort</string>
     <string name="pref_patent_sort_key">pref_patent_sort</string>
-    <string name="pref_date_sort_title">Sort order</string>
+    <string name="pref_date_sort_title">Sort results in</string>
     <string name="pref_result_sort_key">pref_result_sort</string>
-    <string name="pref_result_sort_title">Number of Results</string>
-    <string name="pref_patent_sort_title">Sort Patent Numbers In</string>
+    <string name="pref_result_sort_title">Number of results</string>
     <string name="pref_sort_default">desc</string>
     <string name="pref_result_default">25</string>
     <string name="action_favorites">Favorites</string>
