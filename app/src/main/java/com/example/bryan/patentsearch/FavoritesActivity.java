@@ -1,7 +1,6 @@
 package com.example.bryan.patentsearch;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -11,8 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.bryan.patentsearch.data.FavoritesDatabaseContract;
-import com.example.bryan.patentsearch.data.FavoritesDatabaseHelper;
+import com.example.bryan.patentsearch.data.FavoritesDatabase;
 import com.example.bryan.patentsearch.utils.PatentsViewUtils;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class FavoritesActivity extends AppCompatActivity
 
     private RecyclerView mSearchResultsRV;
     private PatentsViewAdapter mPatentsViewAdapter;
-    private FavoritesDatabaseHelper favoritesDatabaseHelper;
+    private FavoritesDatabase mFavoritesDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +42,17 @@ public class FavoritesActivity extends AppCompatActivity
         mPatentsViewAdapter = new PatentsViewAdapter(this);
         mSearchResultsRV.setAdapter(mPatentsViewAdapter);
 
-        favoritesDatabaseHelper = new FavoritesDatabaseHelper(this);
+        mFavoritesDatabase = new FavoritesDatabase(this);
+    }
 
-        getSupportLoaderManager().initLoader(0, null, this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(getSupportLoaderManager().getLoader(0) == null)
+            getSupportLoaderManager().initLoader(0, null, this);
+        else
+            getSupportLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
@@ -73,27 +79,7 @@ public class FavoritesActivity extends AppCompatActivity
 
             @Override
             public ArrayList<PatentsViewUtils.SearchResult> loadInBackground() {
-                final Cursor cursor = favoritesDatabaseHelper.getReadableDatabase().query(
-                        FavoritesDatabaseContract.FavoritePatents.TABLE_NAME,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
-
-                ArrayList<PatentsViewUtils.SearchResult> allFavorites = new ArrayList<>();
-                while(cursor.moveToNext()) {
-                    final PatentsViewUtils.SearchResult res = new PatentsViewUtils.SearchResult();
-                    res.patentId = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ID));
-                    res.patentTitle = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_TITLE));
-                    res.patentAbstract = cursor.getString(cursor.getColumnIndex(FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ABSTRACT));
-
-                    allFavorites.add(res);
-                }
-
-                mFavorites = allFavorites;
-
+                mFavorites = mFavoritesDatabase.getAll();
                 return mFavorites;
             }
 

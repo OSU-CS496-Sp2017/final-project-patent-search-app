@@ -13,7 +13,7 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favorites.db";
     private static final int DATABASE_VERSION = 1;
 
-    public FavoritesDatabaseHelper(Context context) {
+    protected FavoritesDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -64,7 +64,11 @@ public class PatentsViewUtils {
                 searchResult.patentTitle = searchResultItem.getString("patent_title");
                 searchResult.patentAbstract = searchResultItem.getString("patent_abstract");
 
-                searchResultList.add(searchResult);
+                if(searchResult.patentId != null && !searchResult.patentId.equals("null")
+                        && searchResult.patentTitle != null && !searchResult.patentTitle.equals("null")
+                        && searchResult.patentAbstract != null && !searchResult.patentAbstract.equals("null")) {
+                    searchResultList.add(searchResult);
+                }
             }
             return searchResultList;
         } catch (JSONException e){
