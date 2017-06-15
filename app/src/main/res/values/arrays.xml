@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="pref_date_entry">
-        <item>Ascending</item>
-        <item>Descending</item>
+        <item>Chronological order</item>
+        <item>Reverse chronological order</item>
     </string-array>
 
     <string-array name="pref_sort_values">

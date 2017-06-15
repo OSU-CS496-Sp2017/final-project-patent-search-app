@@ -2,12 +2,13 @@ package com.example.bryan.patentsearch;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity
     private PatentsViewAdapter mPatentsViewAdapter;
     private ProgressBar mLoadingIndicatorPB;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
 
         mSearchResultsRV.setLayoutManager(new LinearLayoutManager(this));
         mSearchResultsRV.setHasFixedSize(true);
+        mSearchResultsRV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         mPatentsViewAdapter = new PatentsViewAdapter(this);
         mSearchResultsRV.setAdapter(mPatentsViewAdapter);
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void doPatentSearch(String searchString){
+    private void doPatentSearch(String searchString) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String date = sharedPreferences.getString(getString(R.string.pref_date_sort_key), getString(R.string.pref_sort_default));
         //String number = sharedPreferences.getString(getString(R.string.pref_patent_sort_key), getString(R.string.pref_sort_default));
@@ -83,23 +84,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    //@Override
+    @Override
     public void onSearchResultClick(PatentsViewUtils.SearchResult searchResult){
         Intent intent = new Intent(this, PatentsViewItemDetailActivity.class);
         intent.putExtra(PatentsViewUtils.SearchResult.EXTRA_SEARCH_RESULT, searchResult);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -129,6 +118,7 @@ public class MainActivity extends AppCompatActivity
                     String searchResults = null;
                     try {
                         searchResults = NetworkUtils.doHTTPGet(patentsViewSearchUrl);
+                        Log.d(TAG, searchResults);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -163,7 +153,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<String> loader) {
-
+        // Nothing necessary to do here
     }
 
     @Override
@@ -171,4 +161,21 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            case R.id.action_favorites:
+                Intent favoritesIntent = new Intent(this, FavoritesActivity.class);
+                startActivity(favoritesIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

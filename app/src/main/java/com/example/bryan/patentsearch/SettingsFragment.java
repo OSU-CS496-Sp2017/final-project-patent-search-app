@@ -9,13 +9,14 @@ import android.support.v7.preference.PreferenceFragmentCompat;
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-    addPreferencesFromResource(R.xml.prefs);
+        addPreferencesFromResource(R.xml.prefs);
     }
 
     @Override
@@ -29,4 +30,5 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         super.onPause();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
+
 }
