@@ -1,7 +1,6 @@
 package com.example.bryan.patentsearch;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
  */
 
 public class PatentsViewAdapter extends RecyclerView.Adapter<PatentsViewAdapter.PatentsViewItemViewHolder> {
+
     private ArrayList<PatentsViewUtils.SearchResult> mSearchResultsList;
     private OnSearchResultClickListener mSearchResultClickListener;
 
@@ -54,6 +54,7 @@ public class PatentsViewAdapter extends RecyclerView.Adapter<PatentsViewAdapter.
     }
 
     class PatentsViewItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         private TextView mSearchResultTV;
 
         public PatentsViewItemViewHolder(View itemView) {
@@ -71,5 +72,7 @@ public class PatentsViewAdapter extends RecyclerView.Adapter<PatentsViewAdapter.
             PatentsViewUtils.SearchResult searchResult = mSearchResultsList.get(getAdapterPosition());
             mSearchResultClickListener.onSearchResultClick(searchResult);
         }
+
     }
+
 }

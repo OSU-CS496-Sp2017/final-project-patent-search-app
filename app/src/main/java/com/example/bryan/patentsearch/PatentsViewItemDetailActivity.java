@@ -27,9 +27,11 @@ public class PatentsViewItemDetailActivity extends AppCompatActivity {
         mSearchResultId = (TextView) findViewById(R.id.tv_search_result_id);
 
         Intent intent = getIntent();
-        PatentsViewUtils.SearchResult searchResult = (PatentsViewUtils.SearchResult)intent.getSerializableExtra(PatentsViewUtils.SearchResult.EXTRA_SEARCH_RESULT);
+        PatentsViewUtils.SearchResult searchResult = (PatentsViewUtils.SearchResult)
+                intent.getSerializableExtra(PatentsViewUtils.SearchResult.EXTRA_SEARCH_RESULT);
         mSearchResultNumber.setText(searchResult.patentNumber);
         mSearchResultTitle.setText(searchResult.patentTitle);
         mSearchResultId.setText(searchResult.patentId);
     }
+
 }
