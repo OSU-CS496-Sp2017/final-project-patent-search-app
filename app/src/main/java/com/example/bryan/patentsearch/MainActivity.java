@@ -8,6 +8,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity
 
         mSearchResultsRV.setLayoutManager(new LinearLayoutManager(this));
         mSearchResultsRV.setHasFixedSize(true);
+        mSearchResultsRV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         mPatentsViewAdapter = new PatentsViewAdapter(this);
         mSearchResultsRV.setAdapter(mPatentsViewAdapter);
@@ -115,8 +117,8 @@ public class MainActivity extends AppCompatActivity
                     Log.d(TAG, "AsyncTaskLoader making network call: " + patentsViewSearchUrl);
                     String searchResults = null;
                     try {
-                        Log.d(TAG, searchResults);
                         searchResults = NetworkUtils.doHTTPGet(patentsViewSearchUrl);
+                        Log.d(TAG, searchResults);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -166,6 +168,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
+                return true;
+            case R.id.action_favorites:
+                Intent favoritesIntent = new Intent(this, FavoritesActivity.class);
+                startActivity(favoritesIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

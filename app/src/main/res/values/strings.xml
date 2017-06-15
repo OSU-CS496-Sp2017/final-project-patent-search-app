@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PatentSearch</string>
+    <string name="app_name">Patent Search</string>
     <string name="action_settings">Settings</string>
     <string name="action_share">Share patent details</string>
     <string name="action_view_patent">View this patent on </string>
@@ -15,4 +15,5 @@
     <string name="pref_patent_sort_title">Sort Patent Numbers In</string>
     <string name="pref_sort_default">desc</string>
     <string name="pref_result_default">25</string>
+    <string name="action_favorites">Favorites</string>
 </resources>

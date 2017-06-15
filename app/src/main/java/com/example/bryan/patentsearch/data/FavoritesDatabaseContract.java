@@ -13,7 +13,8 @@ public class FavoritesDatabaseContract {
     public static class FavoritePatents implements BaseColumns {
         public static final String TABLE_NAME = "favoritePatents";
         public static final String COLUMN_PATENT_ID = "patentId";
-        public static final String COLUMN_PATENT_DESCRIPTION = "description";
+        public static final String COLUMN_PATENT_TITLE = "title";
+        public static final String COLUMN_PATENT_ABSTRACT = "abstract";
     }
 
 }

@@ -21,8 +21,9 @@ public class FavoritesDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_FAVORITE_REPOS_TABLE =
                 "CREATE TABLE " + FavoritesDatabaseContract.FavoritePatents.TABLE_NAME + " (" +
-                        FavoritesDatabaseContract.FavoritePatents._ID + " INTEGER PRIMARY KEY, " +
-                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_DESCRIPTION + " TEXT NOT NULL" +
+                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ID + " TEXT PRIMARY KEY, " +
+                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_TITLE + " TEXT NOT NULL, " +
+                        FavoritesDatabaseContract.FavoritePatents.COLUMN_PATENT_ABSTRACT + " TEXT NOT NULL" +
                         ");";
         db.execSQL(SQL_CREATE_FAVORITE_REPOS_TABLE);
     }

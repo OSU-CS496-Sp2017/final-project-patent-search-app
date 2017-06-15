@@ -25,8 +25,8 @@ public class PatentsViewUtils {
     public static class SearchResult implements Serializable {
         public static final String EXTRA_SEARCH_RESULT = "PatentsViewUtils.SearchResult";
         public String patentId;
-        public String patentNumber;
         public String patentTitle;
+        public String patentAbstract;
     }
 
     public static String buildPatentsViewURL(String patentTitle, String date, String perPage) {
@@ -34,6 +34,7 @@ public class PatentsViewUtils {
         String query = "";
         String options = "";
         String sort = "";
+        final String fields = "&f=[\"patent_id\", \"patent_title\", \"patent_abstract\"]";
 
         if (!patentTitle.equals("")) {
             query = "?q={\"_and\":[{\"_text_any\":{\"" + PATENT_TITLE_PARAM + "\":\"" + patentTitle.replaceAll(" ", "%20") + "\"}}]}";
@@ -44,7 +45,9 @@ public class PatentsViewUtils {
         if (!date.equals("")) {
             sort = "&" + PATENT_QUERY_SORT_PARAM + "=[{\"" + PATENT_DATE_PARAM + "\":\"" + date + "\"}]";
         }
-        return PATENT_SEARCH_BASE_URL + query + options + sort;
+
+
+        return PATENT_SEARCH_BASE_URL + query + options + sort + fields;
     }
 
     public static ArrayList<SearchResult> parsePatentsSearchResultsJSON(String searchResultsJSON){
@@ -58,8 +61,8 @@ public class PatentsViewUtils {
                 JSONObject searchResultItem = searchResultsItems.getJSONObject(i);
 
                 searchResult.patentId = searchResultItem.getString("patent_id");
-                searchResult.patentNumber = searchResultItem.getString("patent_number");
                 searchResult.patentTitle = searchResultItem.getString("patent_title");
+                searchResult.patentAbstract = searchResultItem.getString("patent_abstract");
 
                 searchResultList.add(searchResult);
             }

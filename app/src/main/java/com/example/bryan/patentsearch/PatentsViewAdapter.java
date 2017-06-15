@@ -64,7 +64,7 @@ public class PatentsViewAdapter extends RecyclerView.Adapter<PatentsViewAdapter.
         }
 
         public void bind(PatentsViewUtils.SearchResult searchResult) {
-            mSearchResultTV.setText(searchResult.patentNumber);
+            mSearchResultTV.setText(searchResult.patentId);
         }
 
         @Override
