@@ -14,79 +14,81 @@
 
         <TextView
             android:id="@+id/tv_search_result_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="6dp"
-            android:paddingTop="10dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
             android:textSize="26dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1sp"
-            android:layout_margin="8sp"
+            android:layout_margin="20sp"
             android:background="#999"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:paddingLeft="6sp"
+                android:textSize="20sp"
                 android:text="Patent number: "/>
 
             <TextView
                 android:id="@+id/tv_search_result_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"/>
+                android:textSize="20sp"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:paddingLeft="6sp"
+                android:textSize="20sp"
                 android:text="Granted on: "/>
 
             <TextView
                 android:id="@+id/tv_search_result_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"/>
+                android:textSize="20sp"/>
 
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1sp"
-            android:layout_margin="8sp"
+            android:layout_margin="20sp"
             android:background="#999"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Abstract"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:paddingLeft="6sp"/>
 
         <TextView
             android:id="@+id/tv_search_result_abstract"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="6sp"
-            android:paddingRight="6sp"
+            android:paddingLeft="16sp"
+            android:paddingRight="16sp"
             android:paddingTop="6sp"
-            android:textSize="20dp"/>
+            android:textSize="18dp"/>
 
     </LinearLayout>
 
